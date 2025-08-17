@@ -1,6 +1,0 @@
-{
-  "description": "Nix Flake for multi-system setup: NixOS host, NixOS VM, Windows 11 VM, MacOS Darwin (nix-darwin)",
-  "inputs": {
-    "system": ["x86_64-linux", "aarch64-linux", "x86_64-windows", "aarch64-darwin"]
-  }
-}

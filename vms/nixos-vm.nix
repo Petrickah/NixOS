@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 {
   imports = [
-    ../flake-systems/common.nix
+    ../modules/common.nix
     ../hosts/host.nix
   ];
   # VM-specific options here
