@@ -123,13 +123,13 @@
     brews = [
       # Add any Homebrew packages you want to use
       "cowsay"
+	  "direnv"
     ];
     casks = [
       # Add any Homebrew casks you want to use
       "google-chrome"
       "visual-studio-code"
       "discord"
-      "font-fira-code" # Example of a font cask
     ];
   };
 }

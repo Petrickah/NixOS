@@ -15,22 +15,26 @@
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ self, nixpkgs, nixos-hardware, darwin, ... }:
+  outputs = inputs@{ self, nixpkgs, nixos-hardware, darwin, home-manager, ... }:
     {
       # Use flake-utils to generate configurations for each system
       nixosConfigurations = {
         # NixOS host configuration
         nixosHost = nixpkgs.lib.nixosSystem{
           system = "x86_64-linux"; # Default for NixOS
-          modules = [ ./hosts/nixos_host.nix ];
+          modules = [ ./hosts/host.nix ];
         };
 
         # NixOS VM configuration
         nixosVM = nixpkgs.lib.nixosSystem{
           system = "x86_64-linux"; # Assuming NixOS VM runs on x86_64
-          modules = [ ./hosts/nixos_vm.nix ];
+          modules = [ ./hosts/nixos-vm.nix ];
         };
       };
 
@@ -38,7 +42,23 @@
         # MacOS Darwin (nix-darwin) configuration
         Mac-mini-Tiberiu = darwin.lib.darwinSystem {
           system = "aarch64-darwin"; # For Mac Mini M4 Pro
-          modules = [ ./hosts/darwin.nix ];
+          modules = [
+            ./hosts/darwin.nix
+            ./modules/darwin/system.nix
+            ./modules/darwin/applications.nix
+
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true; # Use global packages
+              home-manager.useUserPackages = true; # Use user-specific packages
+              home-manager.users.tiberiu = import ./modules/darwin/home.nix; # User-specific home configuration
+              home-manager.extraSpecialArgs = { 
+                inherit inputs; 
+                system = "aarch64-darwin"; # Specify the system architecture
+                pkgs = nixpkgs.legacyPackages.aarch64-darwin; # Use aarch64-darwin packages
+              }; # Pass inputs to home-manager
+            }
+          ];
         };
       };
     };
