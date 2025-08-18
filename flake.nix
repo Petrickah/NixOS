@@ -43,15 +43,36 @@
         Mac-mini-Tiberiu = darwin.lib.darwinSystem {
           system = "aarch64-darwin"; # For Mac Mini M4 Pro
           modules = [
-            ./hosts/darwin.nix
-            ./modules/darwin/system.nix
-            ./modules/darwin/applications.nix
+            # Import the Common configuration
+            # This is necessary for ensuring that the Nix environment is set up correctly for the user
+            # and that the user has access to the Nix environment.
+            ./modules/common.nix # Common configuration shared by host and VM
+
+            # Import the Apps configuration
+            # This is necessary for ensuring that the Nix environment is set up correctly for the user
+            # and that the user has access to the Nix environment.
+            # This will ensure that the user has access to the Nix environment when using zsh
+            # and that the Nix environment is set up correctly for the user.
+            ./modules/darwin/apps.nix # Darwin apps configuration
+
+            # Import the Darwin system configuration
+            # This is necessary for ensuring that the Nix environment is set up correctly for Darwin.
+            # This will ensure that the user has access to the Nix environment when using zsh
+            # and that the Nix environment is set up correctly for the user.
+            ./modules/darwin/system.nix # Darwin system configuration
 
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = true; # Use global packages
               home-manager.useUserPackages = true; # Use user-specific packages
-              home-manager.users.tiberiu = import ./modules/darwin/home.nix; # User-specific home configuration
+              home-manager.users.tiberiu = {
+                imports = [
+                  # Import the Home Manager module for Darwin
+                  # This is necessary for ensuring that the Nix environment is set up correctly for the user
+                  # and that the user has access to the Nix environment.
+                  ./modules/darwin/home.nix # Darwin home configuration
+                ];
+              };
               home-manager.extraSpecialArgs = { 
                 inherit inputs; 
                 system = "aarch64-darwin"; # Specify the system architecture
