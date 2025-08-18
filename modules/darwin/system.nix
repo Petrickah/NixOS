@@ -1,15 +1,14 @@
 { config, lib, pkgs, ... }:
 {
-  # Disable the Nix package manager on Darwin
+  # Enable the Nix package manager on Darwin
   # This is necessary for ensuring that the Nix package manager is enabled on Darwin.
   # If you want to enable the Nix daemon service, you can change the following line 
   # and set it to true.
-  nix.enable = false; # Disable the Nix daemon service on Darwin
+  nix.enable = false; # Enable the Nix daemon service on Darwin
+  nix.settings.trusted-users = [ "tiberiu" ]; # Set the trusted users for Nix
+  nix.settings.experimental-features = [ "nix-command" "flakes" ]; # Enable experimental features for Nix
 
-  # Necessary for using flakes and other Nix features
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  # Set the system architecture for Nixpkgs
+  # Set the Nixpkgs configuration for Darwin
   # This is important for ensuring that packages are built for the correct architecture.
   # For Apple Silicon Macs (M1/M2/M4), use aarch64-darwin.
   # For Intel-based Macs, use x86_64-darwin.
@@ -22,6 +21,7 @@
   # nixpkgs.hostPlatform = "x86_64-darwin";
   # Example to allow Rosetta 2 (uncomment if needed):
   nixpkgs.config.allowUnsupportedSystem = true;
+  nixpkgs.config.allowUnfree = true; # Allow unfree packages in Nixpkgs
 
   # Set the Nixpkgs configuration to allow broken packages
   # This is useful for development and testing, but should be used with caution.
@@ -29,6 +29,18 @@
   # For more information, see: https://nixos.wiki/wiki/Nixpkgs
   # and https://nixos.wiki/wiki/Nixpkgs#Allow_broken_packages
   nixpkgs.config.allowBroken = true; # Allow broken packages in Nixpkgs
+
+  # Set the netorking configuration for Darwin
+  # This is important for ensuring that the system can connect to the network.
+  # If you want to use a different hostname, you can change the following line
+  # and set it to the desired hostname.
+  # For more information, see: https://nixos.wiki/wiki/Nixpkgs
+  # and https://nixos.wiki/wiki/Nixpkgs#Networking_configuration
+  networking.hostName = "Mac-mini-Tiberiu"; # Set the hostname for the system; this should match your machine's hostname
+
+  ###################################################################################
+  #  MacOS's System configuration
+  ###################################################################################
 
   # Set the system primary user to the user for whom the Nix environment is configured
   # This is necessary for ensuring that the Nix environment is set up correctly for the user
