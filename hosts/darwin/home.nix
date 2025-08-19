@@ -8,7 +8,7 @@
     # Import the Wallpaper module for Darwin (macOS)
     # This is necessary for ensuring that the Home Manager configuration is set up correctly for the user
     # and that the user has access to the Home Manager environment.
-    ./hosts/darwin/wallpaper.nix
+    ../../hosts/darwin/wallpaper.nix
   ];
 
   # This module configures Home Manager for the user on macOS systems.
