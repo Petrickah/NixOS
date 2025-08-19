@@ -59,6 +59,7 @@
         specialArgs = {
           username = "tiberiu"; # Set the username for the user account
           homeDirectory = "/Users/tiberiu"; # Set the home directory for the user account
+          hostname = "Mac-mini-Tiberiu"; # Set the hostname for the system; this should match your machine's hostname
         };
       };
     };
@@ -83,6 +84,7 @@
         extraSpecialArgs = {
           username = "tiberiu"; # Set the username for the user account
           homeDirectory = "/Users/tiberiu"; # Set the home directory for the user account
+          projectRoot = "/Users/tiberiu/Documents/GitHub/NixOS"; # Set the project root for Home Manager
         };
       };
     };

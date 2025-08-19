@@ -40,7 +40,7 @@
       "wget" # Command-line utility for downloading files from the web
       "curl" # Command-line tool for transferring data with URLs
       "neofetch" # Command-line utility to display system information
-	    "direnv"
+	    "direnv" # Environment variable manager for shell
     ];
 
     # You can also use Homebrew to install casks (macOS applications) and other
@@ -49,10 +49,11 @@
     # and https://nixos.wiki/wiki/Homebrew#Homebrew_packages
     casks = [
       # Add any Homebrew casks you want to use
-      "google-chrome"
-      "visual-studio-code"
-      "discord"
-      "github"
+      "google-chrome" # Google Chrome web browser
+      "visual-studio-code" # Visual Studio Code editor
+      "discord" # Discord communication app
+      "github" # GitHub Desktop application
+      "desktoppr" # Desktop wallpaper manager
     ];
   };
 }

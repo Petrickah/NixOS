@@ -1,8 +1,15 @@
-{ pkgs, username, homeDirectory, ... }:
+{ pkgs, username, homeDirectory, hostname, ... }:
 {
   ###################################################################################
   #  MacOS's Darwin configuration
   ###################################################################################
+
+  # Set the netorking configuration for Darwin
+  # This is important for ensuring that the system can connect to the network.
+  # If you want to use a different hostname, you can change the following line
+  # and set it to the desired hostname.
+  networking.hostName = hostname; # Set the hostname for the system; this should match your machine's hostname
+  networking.computerName = hostname; # Set the computer name for the system; this should match your machine's hostname
 
   # Declare the user for whom the Nix environment is configured
   # This is necessary for ensuring that the Nix environment is set up correctly for the user
@@ -11,38 +18,30 @@
     name = username; # Set the username for the user account
     home = homeDirectory; # Replace with your actual home directory
 
-    # Enable the zsh shell for the user
-    # This will ensure that the user has access to the zsh shell
-    # and that the user can use zsh as their default shell.
-    shell = pkgs.zsh; 
+    # Set the default shell for the user
+    # This is necessary for ensuring that the user has access to the default shell
+    # and that the user can use the default shell as their default shell.
+    shell = pkgs.zsh; # Set the default shell for the user
   };
 
   # Set the Nix configuration for Darwin
   # This is important for ensuring that the Nix environment is set up correctly for Darwin.
   # Note: This is necessary for using the Nix command and flakes.
-  # For more information, see: https://nixos.wiki/wiki/Nixpkgs
-  # and https://nixos.wiki/wiki/Nixpkgs#Nix_configuration
   nix = {
     # Disable the Nix daemon service on Darwin
     # This is necessary for ensuring that the Nix daemon service is not enabled on Darwin.
     # If you want to enable the Nix daemon service, you can change the following line and set it to true.
     # Note: The Nix daemon service is not supported on Darwin, so it is recommended to keep it disabled.
-    # For more information, see: https://nixos.wiki/wiki/Nixpkgs
-    # and https://nixos.wiki/wiki/Nixpkgs#Nix_daemon
     enable = false;
 
     settings = {
       # Set the trusted users for Nix
       # This is necessary for ensuring that the Nix environment is set up correctly for the user
       # and that the user has access to the Nix environment.
-      # For more information, see: https://nixos.wiki/wiki/Nixpkgs
-      # and https://nixos.wiki/wiki/Nixpkgs#Trusted_users
       trusted-users = [ "tiberiu" ];
 
       # Set the Nix configuration to allow experimental features
       # This is useful for development and testing, but should be used with caution.
-      # For more information, see: https://nixos.wiki/wiki/Nixpkgs
-      # and https://nixos.wiki/wiki/Nixpkgs#Experimental_features
       # Note: This is necessary for using flakes and the Nix command.
       experimental-features = [ "nix-command" "flakes" ]; 
     };
@@ -68,61 +67,75 @@
       # Allow unfree packages in Nixpkgs
       # This is useful for development and testing, but should be used with caution.
       # If you want to allow unfree packages, you can uncomment the following line.
-      # For more information, see: https://nixos.wiki/wiki/Nixpkgs
-      # and https://nixos.wiki/wiki/Nixpkgs#Allow_unfree_packages
       # Note: This is necessary for using proprietary software like Google Chrome, Slack, etc.
       allowUnfree = true;
 
       # Set the Nixpkgs configuration to allow broken packages
       # This is useful for development and testing, but should be used with caution.
       # If you want to allow broken packages, you can uncomment the following line.
-      # For more information, see: https://nixos.wiki/wiki/Nixpkgs
-      # and https://nixos.wiki/wiki/Nixpkgs#Allow_broken_packages
       allowBroken = true; # Allow broken packages in Nixpkgs
     };
   };
-
-  # Set the netorking configuration for Darwin
-  # This is important for ensuring that the system can connect to the network.
-  # If you want to use a different hostname, you can change the following line
-  # and set it to the desired hostname.
-  # For more information, see: https://nixos.wiki/wiki/Nixpkgs
-  # and https://nixos.wiki/wiki/Nixpkgs#Networking_configuration
-  networking.hostName = "Mac-mini-Tiberiu"; # Set the hostname for the system; this should match your machine's hostname
 
   ###################################################################################
   #  MacOS's System configuration
   ###################################################################################
 
-  # Set the system primary user to the user for whom the Nix environment is configured
-  # This is necessary for ensuring that the Nix environment is set up correctly for the user
-  # and that the user has access to the Nix environment.
-  # If you want to use a different user, you can change the following line
-  # and set it to the desired user.
-  # For example, if you want to use the user "john", you would set it to "john".
-  # For more information, see: https://nixos.wiki/wiki/Nixpkgs# and https://nixos.wiki/wiki/Nixpkgs#System_primary_user
-  system.primaryUser = "tiberiu"; # Set the primary user for the Nix environment
+  system = {
+    # Set the system primary user to the user for whom the Nix environment is configured
+    # This is necessary for ensuring that the Nix environment is set up correctly for the user
+    # and that the user has access to the Nix environment.
+    # If you want to use a different user, you can change the following line
+    # and set it to the desired user.
+    primaryUser = "tiberiu"; # Set the primary user for the Nix environment
 
-  # Set the system configuration revision for Darwin
-  # This is important for ensuring that the system configuration is compatible with the latest features.
-  # For more information, see: https://nixos.wiki/wiki/Nixpkgs# and https://nixos.wiki/wiki/Nixpkgs#Configuration_revisions
-  system.configurationRevision = "darwin-unstable"; # Use the latest Darwin configuration revision
+    # Set the system configuration revision for Darwin
+    # This is important for ensuring that the system configuration is compatible with the latest features.
+    configurationRevision = "darwin-unstable"; # Use the latest Darwin configuration revision
 
-  # Set the Darwin system state version; this should match the version of nix-darwin you are using.
-  # Valid values can be found in the nix-darwin documentation: https://daiderd.com/nix-darwin/manual/index.html#opt-system.stateVersion
-  system.stateVersion = 6; # Using the latest state version for macOS 26 (Tahoe)
+    # Set the Darwin system state version; this should match the version of nix-darwin you are using.
+    # Valid values can be found in the nix-darwin documentation: https://daiderd.com/nix-darwin/manual/index.html#opt-system.stateVersion
+    stateVersion = 6; # Using the latest state version for macOS 26 (Tahoe)
 
-  #####################################################################################
-  #  MacOS's Services configuration
-  #####################################################################################
+    defaults = {
+      # Set the NetBIOS name for the system; this should match your machine's hostname
+      # This is important for ensuring that the system can be identified on the network.
+      # If you want to use a different NetBIOS name, you can change the following line
+      # and set it to the desired NetBIOS name.
+      # Note: This is necessary for using SMB and other network protocols.
+      smb.NetBIOSName = hostname; 
 
-  services = {
-    # Enable the Nix daemon service on Darwin
-    # This is necessary for ensuring that the Nix daemon service is enabled on Darwin.
-    # If you want to disable the Nix daemon service, you can change the following line and set it to false.
-    # Note: The Nix daemon service is not supported on Darwin, so it is recommended to keep it disabled.
-    # For more information, see: https://nixos.wiki/wiki/Nixpkgs
-    # and https://nixos.wiki/wiki/Nixpkgs#Nix_daemon
-    nix-daemon.enable = false; # Disable the Nix daemon service on Darwin
+      # Customize the system's Dock and Dock preferences
+      # This is useful for customizing the Dock appearance and behavior.
+      # If you want to customize the Dock, you can change the following lines
+      # and set them to the desired Dock preferences.
+      dock = {
+        autohide = false; # Disable Dock autohide
+        autohide-delay = 0.0; # Set Dock autohide delay
+        autohide-time-modifier = 0.15; # Set Dock autohide time modifier
+        static-only = false; # Disable Dock static-only mode
+        orientation = "bottom"; # Set Dock orientation
+        tilesize = 45; # Set Dock size
+        show-recents = false; # Enable Dock show recent applications
+        mineffect = "genie"; # Set Dock minimize effect to scale
+        minimize-to-application = true; # Enable Dock minimize to application
+        magnification = false; # Enable Dock magnification
+        persistent-apps = [
+          # Add your desired persistent applications to the Dock
+          "/Applications/Google Chrome.app" # Google Chrome
+          "/Applications/Discord.app" # Discord
+          "/Applications/Visual Studio Code.app" # Visual Studio Code
+          "/Applications/GitHub Desktop.app" # GitHub Desktop
+          "/System/Applications/Utilities/Terminal.app" # Terminal
+          "/System/Applications/Calendar.app" # Calendar
+          "/System/Applications/Apps.app" # Apps
+          "/System/Applications/System Settings.app" # System Settings
+        ];
+        persistent-others = [
+          # Add your desired persistent others to the Dock
+          "${homeDirectory}/Downloads" # Downloads folder
+        ];
+      };
+    };
   };
 }
