@@ -47,13 +47,13 @@
           # and that the user has access to the Nix environment.
           # This will ensure that the user has access to the Nix environment when using zsh
           # and that the Nix environment is set up correctly for the user.
-          ./modules/darwin/apps.nix
+          ./hosts/darwin/apps.nix
 
           # Import the Darwin system configuration
           # This is necessary for ensuring that the Nix environment is set up correctly for Darwin.
           # This will ensure that the user has access to the Nix environment when using zsh
           # and that the Nix environment is set up correctly for the user.
-          ./modules/darwin/system.nix
+          ./hosts/darwin/system.nix
         ];
 
         specialArgs = {
@@ -78,7 +78,7 @@
         # Use the Home Manager configuration for the user
         # This is necessary for ensuring that the Home Manager configuration is set up correctly for the user
         # and that the user has access to the Home Manager environment.
-        modules = [ ./modules/darwin/home.nix];
+        modules = [ ./hosts/darwin/home.nix ];
 
         extraSpecialArgs = {
           username = "tiberiu"; # Set the username for the user account

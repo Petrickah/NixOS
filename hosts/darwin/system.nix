@@ -111,4 +111,18 @@
   # Set the Darwin system state version; this should match the version of nix-darwin you are using.
   # Valid values can be found in the nix-darwin documentation: https://daiderd.com/nix-darwin/manual/index.html#opt-system.stateVersion
   system.stateVersion = 6; # Using the latest state version for macOS 26 (Tahoe)
+
+  #####################################################################################
+  #  MacOS's Services configuration
+  #####################################################################################
+
+  services = {
+    # Enable the Nix daemon service on Darwin
+    # This is necessary for ensuring that the Nix daemon service is enabled on Darwin.
+    # If you want to disable the Nix daemon service, you can change the following line and set it to false.
+    # Note: The Nix daemon service is not supported on Darwin, so it is recommended to keep it disabled.
+    # For more information, see: https://nixos.wiki/wiki/Nixpkgs
+    # and https://nixos.wiki/wiki/Nixpkgs#Nix_daemon
+    nix-daemon.enable = false; # Disable the Nix daemon service on Darwin
+  };
 }

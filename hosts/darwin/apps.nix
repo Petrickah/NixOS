@@ -1,7 +1,11 @@
 { self, pkgs, ... }:
 {
+  # Add system packages that you want to have available in the Nix environment
+  # This is necessary for ensuring that the Nix environment is set up correctly for the user
+  # and that the user has access to the Nix environment.
+  # For more information, see: https://nixos.wiki/wiki/Nixpkgs
+  # and https://nixos.wiki/wiki/Nixpkgs#System_packages
   environment.systemPackages = with pkgs; [
-    # Add common packages that you want to have available in the Nix environment
     git
     vim
     zsh
