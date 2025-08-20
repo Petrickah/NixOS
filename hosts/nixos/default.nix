@@ -12,11 +12,11 @@
     # Import the Basic Configuration for NixOS
     # This is necessary for ensuring that the Nix environment is set up correctly for the user
     # and that the user has access to the Nix environment.
-    ../../../hosts/nixos-host/system/configuration.nix
+    ../../hosts/nixos/system/configuration.nix
 
     # Import the Hardware Configuration for NixOS
     # This is important for ensuring that the system is configured correctly for NixOS.
-    ../../../hosts/nixos-host/system/hardware-configuration.nix
+    ../../hosts/nixos/system/hardware-configuration.nix
   ];
 
   networking = {
@@ -30,7 +30,7 @@
     # Configure network proxy if necessary
     # proxy.default = "http://user:password@proxy:port/";
     # proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-  }
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.tiberiu = {
@@ -65,8 +65,12 @@
     packages = with pkgs; [
       kdePackages.kate
       zsh
+      git
     ];
   };
+
+  # Enable zsh shell for the user
+  programs.zsh.enable = true;
 
   # Set the Nix configuration for Darwin
   nix = {
