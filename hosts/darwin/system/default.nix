@@ -14,7 +14,7 @@
     # Import the Apps configuration for Darwin (macOS)
     # This is necessary for ensuring that the Nix environment is set up correctly for the user
     # and that the user has access to the Nix environment.
-    ../../hosts/darwin/apps.nix
+    ../../../hosts/darwin/apps.nix
   ];
 
   # This function generates a plist file for the system configuration
