@@ -42,18 +42,11 @@
       Mac-mini-Tiberiu = nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin"; # For Mac Mini M4 Pro
         modules = [
-          # Import the Apps configuration
-          # This is necessary for ensuring that the Nix environment is set up correctly for the user
-          # and that the user has access to the Nix environment.
-          # This will ensure that the user has access to the Nix environment when using zsh
-          # and that the Nix environment is set up correctly for the user.
-          ./hosts/darwin/apps.nix
-
           # Import the Darwin system configuration
           # This is necessary for ensuring that the Nix environment is set up correctly for Darwin.
           # This will ensure that the user has access to the Nix environment when using zsh
           # and that the Nix environment is set up correctly for the user.
-          ./hosts/darwin/system.nix
+          ./hosts/darwin/system
         ];
 
         specialArgs = {
@@ -76,10 +69,12 @@
         # For more information, see: https://nixos.wiki/wiki/Nixpkgs#System_architecture
         pkgs = inputs.nixpkgs.legacyPackages.aarch64-darwin; # Use the aarch64-darwin packages for Mac Mini M4 Pro
 
-        # Use the Home Manager configuration for the user
-        # This is necessary for ensuring that the Home Manager configuration is set up correctly for the user
-        # and that the user has access to the Home Manager environment.
-        modules = [ ./hosts/darwin/home.nix ];
+        modules = [
+          # Import the Home Manager configuration for the user
+          # This will ensure that the user has access to the Home Manager environment
+          # and that the Home Manager configuration is set up correctly for the user.
+          ./hosts/darwin/home
+        ];
 
         extraSpecialArgs = {
           username = "tiberiu"; # Set the username for the user account

@@ -54,6 +54,7 @@
       "discord" # Discord communication app
       "github" # GitHub Desktop application
       "desktoppr" # Desktop wallpaper manager
+      "utm" # UTM virtualization app
     ];
   };
 }
