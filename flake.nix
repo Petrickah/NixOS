@@ -27,13 +27,19 @@
       # NixOS host configuration
       nixosHost = nixpkgs.lib.nixosSystem{
         system = "x86_64-linux"; # Default for NixOS
-        modules = [ ./hosts/host.nix ];
+        modules = [ ./hosts/nixos/default.nix ];
       };
 
       # NixOS VM configuration
       nixosVM = nixpkgs.lib.nixosSystem{
         system = "x86_64-linux"; # Assuming NixOS VM runs on x86_64
         modules = [ ./hosts/nixos-vm.nix ];
+      };
+
+      specialArgs = {
+        username = "tiberiu"; # Set the username for the user account
+        homeDirectory = "/home/tiberiu"; # Set the home directory for the user account
+        hostname = "nixos"; # Set the hostname for the system; this should match your machine's hostname
       };
     };
 
