@@ -27,8 +27,9 @@
       # Specify the Mac App Store applications you want to install
       # This is necessary for ensuring that the Mac App Store applications are available in the Nix environment
       # and that the user has access to the Mac App Store applications.
-      Xcode = 497799835; # Xcode is a common development tool for macOS
-      Amphetamine = 937984704; # Amphetamine is a popular app to prevent sleep on macOS
+      "Xcode" = 497799835; # Xcode is a common development tool for macOS
+      "Amphetamine" = 937984704; # Amphetamine is a popular app to prevent sleep on macOS
+      "Windows App" = 1295203466; # Windows App is a utility for connecting to Windows using RDP on macOS
     };
 
     # Specify the Homebrew packages you want to use
