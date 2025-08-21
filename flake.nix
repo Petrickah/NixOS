@@ -59,7 +59,7 @@
           # This is necessary for ensuring that the Nix environment is set up correctly for Darwin.
           # This will ensure that the user has access to the Nix environment when using zsh
           # and that the Nix environment is set up correctly for the user.
-          ./hosts/darwin/system
+          ./hosts/darwin
         ];
       };
     };
@@ -80,7 +80,21 @@
           # Import the Home Manager configuration for the user
           # This will ensure that the user has access to the Home Manager environment
           # and that the Home Manager configuration is set up correctly for the user.
-          ./hosts/darwin/home
+          ./hosts/home
+        ];
+      };
+
+      "tiberiu@nixos"= home-manager.lib.homeManagerConfiguration {
+        # Use the system architecture for Intel Core i7-14700K
+        # This is important for ensuring that the Home Manager configuration is built for the correct architecture.
+        # For more information, see: https://nixos.wiki/wiki/Nixpkgs#System_architecture
+        pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux; # Use the x86_64-linux packages for Intel Core i7-14700K
+
+        modules = [
+          # Import the Home Manager configuration for the user
+          # This will ensure that the user has access to the Home Manager environment
+          # and that the Home Manager configuration is set up correctly for the user.
+          ./hosts/home
         ];
       };
     };
