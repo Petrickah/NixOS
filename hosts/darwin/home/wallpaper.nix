@@ -17,9 +17,15 @@ in {
   options.programs.wallpaper = {
     enable = lib.mkEnableOption "Set wallpaper using desktoppr";
 
-    image = lib.mkOption {
+    imagePath = lib.mkOption {
       type = lib.types.path;
       description = "Path to the wallpaper image";
+    };
+
+    imageUrl = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      description = "URL to download the wallpaper image if it does not exist";
     };
 
     display = lib.mkOption {
@@ -33,11 +39,19 @@ in {
     home.activation.wallpaper = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       echo "Setting wallpaper for display ${toString cfg.display}"
       ${pkgs.writeShellScriptBin "set-wallpaper" ''
-        # Ensure the image exists
-        if [ ! -f ${cfg.image} ]; then
-          echo "Wallpaper image not found: ${cfg.image}"
-          exit 1
-        fi
+		echo "Downloading the wallpaper from the provided url..."
+		# Check if imageUrl is provided
+		if [ -n "${cfg.imageUrl}" ]; then
+			# Use curl to download the wallpaper from the provided URL
+			# Ensure that the URL points to a valid image file
+			/usr/bin/curl -o ${cfg.imagePath} ${cfg.imageUrl}
+			if [ $? -eq 0 ]; then
+				echo "Default wallpaper downloaded successfully."
+			else
+				echo "Failed to download the default wallpaper from ${cfg.imageUrl}."
+				exit 1
+			fi
+		fi
 
         # Check if desktoppr command is available
         # Ensure that desktoppr is installed and available in the PATH
@@ -46,13 +60,13 @@ in {
           exit 1
         fi
 
-        echo "Setting wallpaper to ${cfg.image} on display ${toString cfg.display}"
+        echo "Setting wallpaper to ${cfg.imagePath} on display ${toString cfg.display}"
 
         # Set the wallpaper using desktoppr
         # The desktoppr command should be available in the PATH, or you can specify its full path
         # For example, if desktoppr is installed via Homebrew, it might be located at /opt/homebrew/bin/desktoppr
         # Adjust the path accordingly if necessary
-        /usr/local/bin/desktoppr ${toString cfg.display} ${cfg.image}
+        /usr/local/bin/desktoppr ${toString cfg.display} ${cfg.imagePath}
       ''}/bin/set-wallpaper
     '';
   };
