@@ -82,6 +82,11 @@
           # and that the Home Manager configuration is set up correctly for the user.
           ./hosts/home
         ];
+
+        extraSpecialArgs = {
+          username = "tiberiu";
+          homeDirectory = "/Users/tiberiu";
+        };
       };
 
       "tiberiu@nixos"= home-manager.lib.homeManagerConfiguration {
@@ -96,6 +101,11 @@
           # and that the Home Manager configuration is set up correctly for the user.
           ./hosts/home
         ];
+
+        extraSpecialArgs = {
+          username = "tiberiu";
+          homeDirectory = "/home/tiberiu";
+        };
       };
     };
   };

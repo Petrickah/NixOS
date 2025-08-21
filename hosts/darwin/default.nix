@@ -14,12 +14,12 @@
     # Import the System configuration for Darwin (macOS)
     # This is necessary for ensuring that the Nix environment is set up correctly for the user
     # and that the user has access to the Nix environment.
-    ../../../hosts/darwin/system
+    ../../hosts/darwin/system
 
     # Import the user configuration for Darwin (macOS)
     # This is necessary for ensuring that the Nix environment is set up correctly for the user
     # and that the user has access to the Nix environment.
-    ../../../users/tiberiu/darwin.nix
+    ../../users/tiberiu/darwin.nix
   ];
 
   system = {

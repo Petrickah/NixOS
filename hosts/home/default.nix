@@ -1,20 +1,20 @@
-{ self, lib, pkgs, ... }:
+{ self, lib, pkgs, username, homeDirectory, ... }:
 {
   ###################################################################################
-  #  MacOS's Darwin Home Manager configuration
+  #  Home Manager configuration
   ###################################################################################
 
   imports = [
     # Import the Wallpaper module for Darwin (macOS)
     # This is necessary for ensuring that the Home Manager configuration is set up correctly for the user
     # and that the user has access to the Home Manager environment.
-    ../../../hosts/darwin/home/wallpaper.nix
+    ../../hosts/darwin/home/wallpaper.nix
   ];
 
   # This module configures Home Manager for the user on macOS systems.
   # It allows you to manage user-specific configurations and packages using Home Manager.
-  home.username = "tiberiu"; # Set the username for Home Manager
-  home.homeDirectory = "/Users/tiberiu"; # Set the home directory for Home Manager
+  home.username = username; # Set the username for Home Manager
+  home.homeDirectory = homeDirectory;
 
   # Set the Home-Manager state version; this should match the version of nix-darwin you are using.
   # Valid values can be found in the nix-darwin documentation: https://daiderd.com/nix-darwin/manual/index.html#opt-system.stateVersion
