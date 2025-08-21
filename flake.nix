@@ -19,21 +19,34 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
   };
 
-  outputs = { self, nixpkgs, nixos-hardware, nix-darwin, home-manager, ... }@inputs: 
+  outputs = { self, nixpkgs, nixos-hardware, nix-darwin, home-manager, vscode-server, ... }@inputs: 
   {
     nixosConfigurations = {
       # NixOS host configuration
-      nixosHost = nixpkgs.lib.nixosSystem{
+      nixosHost = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux"; # Default for NixOS
-        modules = [ ./hosts/nixos/default.nix ];
+        modules = [ 
+          ./hosts/nixos
+
+          vscode-server.nixosModules.default {
+            services.vscode-server.enable = true;
+          }
+        ];
       };
 
       # NixOS VM configuration
-      nixosVM = nixpkgs.lib.nixosSystem{
+      nixosVM = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux"; # Assuming NixOS VM runs on x86_64
-        modules = [ ./hosts/nixos-vm.nix ];
+        modules = [ 
+          ./hosts/nixos-vm.nix
+
+          vscode-server.nixosModules.default {
+            services.vscode-server.enable = true;
+          }
+        ];
       };
     };
 

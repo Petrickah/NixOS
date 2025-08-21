@@ -1,4 +1,4 @@
-{ self, lib, pkgs, username, homeDirectory, hostname, ... }:
+{ self, lib, pkgs, ... }:
 {
   ###################################################################################
   #  NixOS's System configuration
@@ -35,8 +35,8 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.tiberiu = {
     isNormalUser = true; # Set the user as a normal user account
-    name = username; # Set the username for the user account
-    home = homeDirectory; # Replace with your actual home directory
+    name = "tiberiu"; # Set the username for the user account
+    home = "/home/tiberiu"; # Replace with your actual home directory
     shell = pkgs.zsh; # Set the default shell for the user
 
     # Set the description for the user account
@@ -78,9 +78,31 @@
     settings = {
       trusted-users = [ "tiberiu" ]; # Set trusted users for Nix
       experimental-features = [ "nix-command" "flakes" ]; # Enable experimental features
+      trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      ];
+      substituters = [
+        "https://cache.nixos.org"
+      ];
+    };
+
+    gc = {
+      automatic = lib.mkDefault true;
+      dates = lib.mkDefault "daily";
+      options = lib.mkDefault "--delete-older-than 3h";
     };
   };
 
+  # Enable the OpenSSH daemon.
+  services.openssh = {
+    enable = true;
+    settings = {
+        X11Forwarding = true;
+        PermitRootLogin = "no"; # Disable root login
+        PasswordAuthentication = true; # Disable password login. Change this to false once the keys are generated and set.
+    };
+    openFirewall = true;
+  };
 
   # Set the system configuration for NixOS
   # This is important for ensuring that the system is configured correctly for NixOS.
@@ -93,5 +115,18 @@
   time.timeZone = "Europe/Bucharest"; # Set the timezone to East European Time (Romania)
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "ro_RO.UTF-8";
+  i18n = {
+    defaultLocale = "ro_RO.UTF-8";
+    extraLocaleSettings = {
+      LC_ADDRESS = "ro_RO.UTF-8";
+      LC_IDENTIFICATION = "ro_RO.UTF-8";
+      LC_MEASUREMENT = "ro_RO.UTF-8";
+      LC_MONETARY = "ro_RO.UTF-8";
+      LC_NAME = "ro_RO.UTF-8";
+      LC_NUMERIC = "ro_RO.UTF-8";
+      LC_PAPER = "ro_RO.UTF-8";
+      LC_TELEPHONE = "ro_RO.UTF-8";
+      LC_TIME = "ro_RO.UTF-8";
+    };
+  }
 }
